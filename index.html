@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09070c">
+  <title>MUSYICPANZ — Music for Your Soul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-icon">♫</span><span>MUSYIC<span class="pink">PANZ</span><small>Music for your soul</small></span></a>
+      <nav class="side-nav">
+        <button class="nav-link active" data-page="home"><span>⌂</span> Beranda</button>
+        <button class="nav-link" data-page="search"><span>⌕</span> Cari</button>
+        <button class="nav-link" data-page="library"><span>▤</span> Koleksi Kamu</button>
+      </nav>
+      <div class="side-label">PLAYLIST KAMU <button id="newPlaylist" class="tiny-add">＋</button></div>
+      <div id="sidebarPlaylists" class="sidebar-playlists"><p class="muted small">Login untuk menyimpan playlist.</p></div>
+      <div class="sidebar-bottom">
+        <button class="nav-link" data-page="recap"><span>◷</span> Music Recap</button>
+        <button class="nav-link" data-page="profile"><span>⚙</span> Pengaturan</button>
+        <div class="account-mini"><div class="avatar">P</div><div><b id="sideUser">Pengunjung</b><small id="sidePlan">Mode tamu</small></div><button id="authOpen" class="text-button">Login</button></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="mobile-brand">♫ <b>MUSYIC<span class="pink">PANZ</span></b></div>
+        <div class="history-arrows"><button aria-label="Kembali">‹</button><button aria-label="Maju">›</button></div>
+        <label class="top-search"><span>⌕</span><input id="globalSearch" placeholder="Cari lagu, artis, album..."></label>
+        <button id="topLogin" class="login-button">Login / Daftar</button>
+        <button id="userButton" class="user-button hidden">P</button>
+      </header>
+
+      <section id="page-home" class="page active">
+        <div class="welcome-row"><div><p class="eyebrow">MUSIC FOR YOUR SOUL</p><h1>Halo, pendengar <span class="pink">✦</span></h1><p class="muted">Temukan musik yang cocok dengan suasana hatimu.</p></div><div class="date-chip">✦ YOUR DAILY MIX</div></div>
+        <div class="hero">
+          <div class="hero-copy"><span class="pill">MUSYICPANZ ORIGINAL</span><h2>Dengarkan musik favoritmu,<br>di mana saja.</h2><p>Temukan lagu baru, simpan favorit, dan nikmati setiap nada.</p><button class="primary-button" data-goto="search">Mulai mendengarkan <span>→</span></button></div>
+          <div class="hero-art"><div class="orb orb-one"></div><div class="orb orb-two"></div><div class="hero-note">♫</div></div>
+        </div>
+        <div class="section-heading"><div><p class="eyebrow">PILIHAN UNTUKMU</p><h2>Jelajahi suasana</h2></div></div>
+        <div class="mood-grid">
+          <button class="mood-card mood-pink" data-mood="pop">✦<b>Pop</b><small>Hits pilihan</small></button>
+          <button class="mood-card mood-gold" data-mood="dangdut">♫<b>Dangdut</b><small>Irama lokal</small></button>
+          <button class="mood-card mood-red" data-mood="rock">♬<b>Rock</b><small>Energi penuh</small></button>
+          <button class="mood-card mood-blue" data-mood="hip hop">♛<b>Hip Hop</b><small>Beats pilihan</small></button>
+          <button class="mood-card mood-green" data-mood="indie">♪<b>Indie</b><small>Temukan cerita</small></button>
+          <button class="mood-card mood-violet" data-mood="k-pop">♡<b>K-Pop</b><small>Global favorites</small></button>
+        </div>
+        <div class="section-heading"><div><p class="eyebrow">MULAI DARI SINI</p><h2>Lagu populer</h2></div><button class="text-button" data-goto="search">Cari lagu →</button></div>
+        <div id="homeTracks" class="track-grid"><div class="empty-state">Cari lagu untuk mulai membangun koleksimu.</div></div>
+      </section>
+
+      <section id="page-search" class="page">
+        <p class="eyebrow">TEMUKAN MUSIK BARU</p><h1>Cari musik</h1>
+        <div class="search-large"><span>⌕</span><input id="searchInput" placeholder="Apa yang ingin kamu dengarkan?"><button id="searchButton">Cari</button></div>
+        <div class="section-heading"><h2>Hasil pencarian</h2><span id="searchStatus" class="muted small">Cari lagu atau artis favoritmu.</span></div>
+        <div id="searchResults" class="track-grid"><div class="empty-state">Hasil pencarian akan muncul di sini.</div></div>
+      </section>
+
+      <section id="page-library" class="page">
+        <p class="eyebrow">MUSIK YANG KAMU SIMPAN</p><h1>Koleksi kamu</h1>
+        <div class="library-tabs"><button class="tab active" data-library="favorites">♡ Favorit</button><button class="tab" data-library="playlists">▤ Playlist</button><button class="tab" data-library="history">◷ Riwayat</button></div>
+        <div id="libraryContent" class="track-grid"><div class="empty-state">Login untuk menyinkronkan koleksi antar perangkat.</div></div>
+      </section>
+
+      <section id="page-recap" class="page">
+        <p class="eyebrow">YOUR LISTENING JOURNEY</p><h1>Music Recap</h1>
+        <div class="recap-card"><span class="pill">30 HARI TERAKHIR</span><h2>Musik adalah ceritamu.</h2><div class="recap-number" id="recapCount">0</div><p class="muted">Lagu tersimpan di riwayat perangkat ini</p><div class="recap-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+      </section>
+
+      <section id="page-profile" class="page">
+        <p class="eyebrow">AKUN DAN PREFERENSI</p><h1>Pengaturan</h1>
+        <div class="settings-card"><div class="profile-row"><div class="avatar big">P</div><div><h3 id="profileName">Pengunjung</h3><p class="muted" id="profileEmail">Belum login</p></div><button id="profileAuth" class="primary-button">Login</button></div><hr><div class="setting-row"><div><b>Tampilan gelap</b><small>Tema hitam dan pink MUSYICPANZ</small></div><span class="toggle on"></span></div><div class="setting-row"><div><b>Kualitas streaming</b><small>Ditentukan oleh sumber pemutaran</small></div><span class="muted">Otomatis</span></div><div class="setting-row"><div><b>Privasi</b><small>Data playlist dilindungi oleh Row Level Security</small></div><span class="pink">●</span></div></div>
+      </section>
+
+      <footer class="footer">© 2026 MUSYICPANZ <span>Music for your soul · Made with ♡</span></footer>
+    </main>
+  </div>
+
+  <div id="playerBar" class="player-bar">
+    <div class="now-playing"><div id="nowThumb" class="now-thumb">♫</div><div><b id="nowTitle">Belum ada lagu</b><small id="nowArtist">Pilih lagu untuk diputar</small></div><button id="likeCurrent" class="heart-button">♡</button></div>
+    <div class="player-controls"><div class="control-buttons"><button id="prevButton">|‹</button><button id="playButton" class="play-main">▶</button><button id="nextButton">›|</button></div><div class="progress-row"><span id="currentTime">0:00</span><div class="progress-track"><div id="progressFill"></div></div><span id="duration">—:—</span></div></div>
+    <div class="player-extra"><button id="lyricsButton">☷ Lirik</button><button id="queueButton">☰ Antrian</button><div id="youtubePlayer" class="youtube-hidden"></div></div>
+  </div>
+
+  <div id="authModal" class="modal hidden"><div class="modal-card"><button class="modal-close" id="authClose">×</button><div class="brand modal-brand"><span class="brand-icon">♫</span><span>MUSYIC<span class="pink">PANZ</span><small>Music for your soul</small></span></div><h2>Selamat datang</h2><p class="muted">Login untuk menyimpan playlist dan favoritmu.</p><label>Email<input id="authEmail" type="email" placeholder="nama@email.com"></label><label>Password<input id="authPassword" type="password" placeholder="Minimal 6 karakter"></label><button id="emailLogin" class="primary-button full">Login</button><button id="emailSignup" class="outline-button full">Buat akun baru</button><div class="divider">atau lanjutkan dengan</div><button id="googleLogin" class="social-button">G Lanjutkan dengan Google</button><button id="facebookLogin" class="social-button">f Lanjutkan dengan Facebook</button><p id="authMessage" class="form-message"></p></div></div>
+
+  <div id="lyricsModal" class="modal hidden"><div class="modal-card lyrics-card"><button class="modal-close" id="lyricsClose">×</button><p class="eyebrow">SING ALONG</p><h2 id="lyricsTitle">Lirik lagu</h2><div id="lyricsText" class="lyrics-text">Pilih lagu untuk mencari lirik.</div></div></div>
+  <div id="toast" class="toast"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
